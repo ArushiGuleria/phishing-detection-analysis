@@ -52,14 +52,13 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-# Plot the distribution of the target variable
+# distribution of target
 target = url_df['Category']
 
-# Plot the distribution of the target variable
 plt.figure(figsize=(10, 6))
 ax = sns.countplot(x=target, palette='viridis')
 
-# Add count values on top of the bars
+# Add count values
 for p in ax.patches:
     ax.annotate(f'{p.get_height()}', (p.get_x() + p.get_width() / 2., p.get_height()),
                 ha='center', va='center', xytext=(0, 10), textcoords='offset points')
@@ -72,13 +71,13 @@ plt.show()
 
 target = url_df['Category']
 
-# Count the occurrences of each category
+# occurrences of each category
 category_counts = target.value_counts()
 
-# Define a list of colors for the pie chart
+
 colors = plt.cm.get_cmap('tab20', len(category_counts)).colors
 
-# Plot the pie chart
+# pie chart
 plt.figure(figsize=(10, 8))
 plt.pie(category_counts, labels=category_counts.index, autopct='%1.1f%%', startangle=140, colors=colors)
 plt.title('Distribution of Target Variable')
@@ -111,7 +110,7 @@ url_X_train, url_X_test, y_train, y_test = train_test_split(
 
 tokenizer_utility = TokenizerUtility()
 
-# Use TF-IDF vectorization with custom tokenizer for URL
+# Use TF-IDF vectorization
 url_tfidf_vectorizer = TfidfVectorizer(tokenizer=tokenizer_utility.tokenize_and_stem, max_features=5000)
 url_X_train_tfidf = url_tfidf_vectorizer.fit_transform(url_X_train)
 url_X_test_tfidf = url_tfidf_vectorizer.transform(url_X_test)
@@ -121,43 +120,41 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 from time import time
 
-# Assuming X_train_tfidf is your TF-IDF vectorized training data and y_train are class labels
 
-# Start recording training time
 train_start_time = time()
 
-# Train the Random Forest Classifier
+# Random Forest Classifier
 rf_classifier = RandomForestClassifier(n_estimators=100, random_state=42)
 rf_classifier.fit(url_X_train_tfidf, y_train)
 
-# End recording training time
+# recording training time
 train_end_time = time()
 
-# Calculate training time
+# training time
 training_time = train_end_time - train_start_time
 print(f"Training Time: {training_time:.2f} seconds")
 
-# Start recording testing time
+# recording testing time
 test_start_time = time()
 
-# Make predictions on the test set (assuming you have X_test_tfidf)
+# test set predictions
 y_pred = rf_classifier.predict(url_X_test_tfidf)
 
-# End recording testing time
+# End testing time
 test_end_time = time()
 
-# Calculate testing time
+# testing time
 testing_time = test_end_time - test_start_time
 print(f"Testing Time: {testing_time:.2f} seconds")
 
 # Calculate accuracy
 accuracy = accuracy_score(y_test, y_pred)
 
-# Calculate overall precision, recall, F1-score, and false positive rate
+# Calculate precision, recall, F1-score, false positive rate
 precision, recall, f1_score, _ = precision_recall_fscore_support(y_test, y_pred, average='micro')
 fpr = 1 - recall
 
-# Print overall evaluation metrics
+# overall evaluation metrics
 print("\nOverall Evaluation:")
 print(f"Precision (Micro): {precision:.4f}")
 print(f"Recall (Micro): {recall:.4f}")
@@ -176,7 +173,7 @@ dt_classifier = DecisionTreeClassifier(random_state=42)
 dt_classifier.fit(url_X_train_tfidf, y_train)
 end_time = time()
 
-# Calculate training time
+# training time
 training_time = end_time - start_time
 print(f"Training Time: {training_time:.2f} seconds")
 # Make predictions on the test set using Decision Tree
@@ -184,13 +181,13 @@ test_start_time = time()
 y_pred_dt = dt_classifier.predict(url_X_test_tfidf)
 test_end_time = time()
 
-# Calculate testing time
+# testing time
 testing_time = test_end_time - test_start_time
 print(f"Testing Time: {testing_time:.2f} seconds")
 precision, recall, f1_score, _ = precision_recall_fscore_support(y_test, y_pred_dt, average='micro')
 fpr = 1 - recall
 
-# Print overall evaluation metrics
+# evaluation metrics
 print("\nOverall Evaluation:")
 print(f"Precision (Micro): {precision:.4f}")
 print(f"Recall (Micro): {recall:.4f}")
@@ -211,7 +208,7 @@ end_time = time()
 # Make predictions on the test set using SVM
 
 
-# Calculate training time
+# training time
 training_time = end_time - start_time
 print(f"Training Time: {training_time:.2f} seconds")
 test_start_time = time()
@@ -223,7 +220,7 @@ print(f"Testing Time: {testing_time:.2f} seconds")
 precision, recall, f1_score, _ = precision_recall_fscore_support(y_test, y_pred_svm, average='micro')
 fpr = 1 - recall
 
-# Print overall evaluation metrics
+# evaluation metrics
 print("\nOverall Evaluation:")
 print(f"Precision (Micro): {precision:.4f}")
 print(f"Recall (Micro): {recall:.4f}")
@@ -248,7 +245,7 @@ print(f"Testing Time: {testing_time:.4f} seconds")
 precision, recall, f1_score, _ = precision_recall_fscore_support(y_test, y_pred_nb, average='micro')
 fpr = 1 - recall
 
-# Print overall evaluation metrics
+# evaluation metrics
 print("\nOverall Evaluation:")
 print(f"Precision (Micro): {precision:.4f}")
 print(f"Recall (Micro): {recall:.4f}")
@@ -270,9 +267,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 import pandas as pd
 
-# Load your dataset
 
-# Define the classifiers
 classifiers = {
 
     'Logistic Regression': LogisticRegression(max_iter=1000, random_state=42),
@@ -315,25 +310,24 @@ for name, clf in classifiers.items():
 dt_classifier = DecisionTreeClassifier(random_state=42)
 dt_classifier.fit(url_X_train_tfidf, y_train)
 
-# Make predictions on the test set using Decision Tree
+# predictions on the test set using Decision Tree
 y_pred_dt = dt_classifier.predict(url_X_test_tfidf)
 
-# Train a Support Vector Machine classifier
+# Support Vector Machine
 svm_classifier = SVC(kernel='linear', random_state=42)
 svm_classifier.fit(url_X_train_tfidf, y_train)
 
-# Make predictions on the test set using SVM
+# predictions on the test set using SVM
 y_pred_svm = svm_classifier.predict(url_X_test_tfidf)
 nb_classifier = MultinomialNB()
 nb_classifier.fit(url_X_train_tfidf, y_train)
 
-# Make predictions on the test set using Naive Bayes
+# predictions on the test set using Naive Bayes
 y_pred_nb = nb_classifier.predict(url_X_test_tfidf)
 
-# Train a k-Nearest Neighbors classifier
+# k-Nearest Neighbors classifier
 knn_classifier = KNeighborsClassifier()
 knn_classifier.fit(url_X_train_tfidf, y_train)
-
 
 
 accuracy_dt = accuracy_score(y_test, y_pred_dt)
@@ -356,18 +350,18 @@ accuracies = {
 
 }
 
-# Extract classifier names and accuracies as separate lists
+# classifier names and accuracies as separate lists
 classifier_names = list(accuracies.keys())
 classifier_accuracies = list(accuracies.values())
 
-# Create a bar chart
+# bar chart
 plt.figure(figsize=(8, 6))  # Adjust figure size as desired
 plt.bar(classifier_names, classifier_accuracies, color=['blue', 'green', 'red', 'purple'])
 plt.xlabel("Classifiers")
 plt.ylabel("Accuracy")
 plt.title("Comparison of Classifier Accuracies")
 
-# Add data labels above bars (optional)
+# data labels
 for i, v in enumerate(classifier_accuracies):
     plt.text(i, v + 0.01, f"{v:.2f}", ha='center', va='bottom', fontsize=10)
 
@@ -390,7 +384,7 @@ model.fit(url_X_train_tfidf, y_train_encoded)
 
 y_pred = model.predict(url_X_test_tfidf)
 
-# Calculate mean squared error (MSE)
+# mean squared error
 accuracy = accuracy_score(y_test_encoded, y_pred.round())  # Round predictions to nearest integer
 print("Accuracy:", accuracy)
 
@@ -401,10 +395,10 @@ from sklearn.metrics import accuracy_score
 knn_model = KNeighborsClassifier(n_neighbors=5)  # Adjust 'n_neighbors' as needed
 knn_model.fit(url_X_train_tfidf, y_train_encoded)
 
-# Make predictions on the test set
+# predictions on the test set
 y_pred = knn_model.predict(url_X_test_tfidf)
 
-# Calculate accuracy
+# accuracy
 accuracy = accuracy_score(y_test_encoded, y_pred)
 print("Accuracy:", accuracy)
 
@@ -416,10 +410,10 @@ from sklearn.metrics import accuracy_score
 logistic_model = LogisticRegression(solver='lbfgs', multi_class='multinomial')
 logistic_model.fit(url_X_train_tfidf, y_train_encoded)
 
-# Make predictions on the test set
+# predictions on the test set
 y_pred = logistic_model.predict(url_X_test_tfidf)
 
-# Calculate accuracy
+# accuracy
 accuracy = accuracy_score(y_test_encoded, y_pred)
 print("Accuracy:", accuracy)
 
@@ -430,10 +424,10 @@ from sklearn.metrics import accuracy_score
 gbc_model = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, random_state=42)
 gbc_model.fit(url_X_train_tfidf, y_train_encoded)
 
-# Make predictions on the test set
+# predictions on the test set
 y_pred = gbc_model.predict(url_X_test_tfidf)
 
-# Calculate accuracy
+# accuracy
 accuracy = accuracy_score(y_test_encoded, y_pred)
 print("Accuracy:", accuracy)
 
@@ -450,26 +444,26 @@ start_time = time.time()
 url_text = url_df['Data'].tolist()
 y = url_df['Category']
 
-# Label encoding for target variable (assuming categories)
+# Label encoding for target variable
 encoder = LabelEncoder()
 y_encoded = encoder.fit_transform(y)
 
-# Custom Tokenizer (optional, replace with your implementation if needed)
+# Tokenizer
 tokenizer = Tokenizer(num_words=5000)  # Adjust num_words as needed
 tokenizer.fit_on_texts(url_text)
 url_sequences = tokenizer.texts_to_sequences(url_text)
 
-# Pad sequences to a fixed length (optional, consider experimenting)
+# Pad sequences to a fixed length
 max_len = 100  # Adjust max_len as needed
 url_padded = pad_sequences(url_sequences, maxlen=max_len, padding='post')
 
 data_padded_train, data_padded_test, y_train, y_test = train_test_split(url_padded, y_encoded, test_size=0.2, random_state=42)
 
-# Embedding layer (optional, experiment with embedding dimensions)
+# Embedding layer
 embedding_dim = 128  # Adjust embedding_dim as needed
 embedding_matrix = np.random.rand(len(tokenizer.word_index) + 1, embedding_dim)  # Initialize randomly
 
-# Define the CNN model
+# CNN model
 model = Sequential()
 model.add(Embedding(len(tokenizer.word_index) + 1, embedding_dim, input_length=max_len, embeddings_initializer=Constant(embedding_matrix)))  # Use pre-trained embeddings if available
 model.add(Conv1D(32, kernel_size=3, activation='relu'))
@@ -478,18 +472,18 @@ model.add(Flatten())
 model.add(Dense(128, activation='relu'))
 model.add(Dense(len(encoder.classes_), activation='softmax'))  # Output layer with number of classes
 
-# Compile the model
+# Compile
 model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-# Train the model
+# Train
 history = model.fit(data_padded_train, y_train, epochs=10, batch_size=128, validation_split=0.2)
 
-# Extract training and validation accuracy from history
+# training and validation accuracy
 end_time = time.time()
 training_time = end_time - start_time
 print("Training time: {:.2f} seconds".format(training_time))
 
-# Evaluate the model on the test set
+# testing
 test_start_time = time.time()
 test_loss, test_accuracy = model.evaluate(data_padded_test, y_test)
 test_end_time=time.time();
@@ -499,7 +493,7 @@ print(f"Test Loss: {test_loss:.4f}")
 print(f"Test Accuracy: {test_accuracy:.4f}")
 
 
-# Accessing the training history to get validation accuracy
+# validation accuracy
 validation_accuracy = history.history['val_accuracy']
 print(f"Validation Accuracy: {validation_accuracy[-1]:.4f}")
 
@@ -508,37 +502,37 @@ test_loss, test_accuracy = model.evaluate(data_padded_test, y_test)
 print(f"Test Loss: {test_loss:.4f}")
 print(f"Test Accuracy: {test_accuracy:.4f}")
 
-# Make predictions on test set
+# predictions on test set
 y_pred = np.argmax(model.predict(data_padded_test), axis=-1)  # Predict class labels
 
-# Calculate precision, recall, F1-score, and FPR for all classes
+# precision, recall, F1-score, and FPR for all classes
 precision, recall, f1_score, _ = precision_recall_fscore_support(y_test, y_pred, average='micro')
 fpr = 1 - recall
 
-# Print overall evaluation metrics
+# evaluation metrics
 print("\nOverall Evaluation:")
 print(f"Precision (Micro): {precision:.4f}")
 print(f"Recall (Micro): {recall:.4f}")
 print(f"F1-Score (Micro): {f1_score:.4f}")
 print(f"False Positive Rate (FPR): {fpr:.4f}")
 
-# Calculate training time
+# training time
 
 from sklearn.metrics import precision_recall_fscore_support
 y_pred = np.argmax(model.predict(data_padded_test), axis=-1) # Convert probabilities to class labels
 
-# Calculate precision, recall, F1-score, and FPR for all classes
+# precision, recall, F1-score, and FPR for all classes
 precision, recall, f1_score, _ = precision_recall_fscore_support(y_test, y_pred, average='micro')
 fpr = 1 - recall
 
-# Print overall evaluation metrics
+# evaluation metrics
 print("\nOverall Evaluation:")
 print(f"Precision (Micro): {precision:.4f}")
 print(f"Recall (Micro): {recall:.4f}")
 print(f"F1-Score (Micro): {f1_score:.4f}")
 print(f"False Positive Rate (FPR): {fpr:.4f}")
 
-# Calculate training time
+# training time
 end_time = time.time()
 training_time = end_time - start_time
 print("Training time: {:.2f} seconds".format(training_time))
@@ -551,14 +545,14 @@ from sklearn.metrics import confusion_matrix
 import seaborn as sns
 from sklearn.metrics import confusion_matrix
 
-# Get predictions for validation data
+# predictions for validation data
 predictions = model.predict(data_padded_test)
 predicted_labels = np.argmax(predictions, axis=1)
 
-# Compute confusion matrix
+# confusion matrix
 cm = confusion_matrix(y_test, predicted_labels)
 
-# Print confusion matrix
+# print confusion matrix
 print("Confusion Matrix:")
 print(cm)
 plt.figure(figsize=(10, 8))
@@ -577,7 +571,7 @@ plt.title('Training and Validation Accuracy')
 plt.legend()
 plt.show()
 
-# Plot training and validation loss
+# training and validation loss
 plt.plot(history.history['loss'], label='Training Loss')
 plt.plot(history.history['val_loss'], label='Validation Loss')
 plt.xlabel('Epoch')
@@ -601,26 +595,26 @@ start_time = time.time()
 url_text = url_df['Data'].tolist()
 y = url_df['Category']
 
-# Label encoding for target variable (assuming categories)
+# Label encoding for target variable
 encoder = LabelEncoder()
 y_encoded = encoder.fit_transform(y)
 
-# Custom Tokenizer (optional, replace with your implementation if needed)
+# Custom Tokenizer
 tokenizer = Tokenizer(num_words=5000)  # Adjust num_words as needed
 tokenizer.fit_on_texts(url_text)
 url_sequences = tokenizer.texts_to_sequences(url_text)
 
-# Pad sequences to a fixed length (optional, consider experimenting)
+# Pad sequences to a fixed length
 max_len = 100  # Adjust max_len as needed
 url_padded = pad_sequences(url_sequences, maxlen=max_len, padding='post')
 
 data_padded_train, data_padded_test, y_train, y_test = train_test_split(url_padded, y_encoded, test_size=0.2, random_state=42)
 
-# Embedding layer (optional, experiment with embedding dimensions)
+# Embedding layer
 embedding_dim = 128  # Adjust embedding_dim as needed
 embedding_matrix = np.random.rand(len(tokenizer.word_index) + 1, embedding_dim)  # Initialize randomly
 
-# Define the CNN model
+# CNN model
 model = Sequential()
 model.add(Embedding(len(tokenizer.word_index) + 1, embedding_dim, input_length=max_len, embeddings_initializer=Constant(embedding_matrix)))  # Use pre-trained embeddings if available
 model.add(Conv1D(32, kernel_size=3, activation='relu'))
@@ -630,21 +624,21 @@ model.add(Dense(128, activation='relu'))
 model.add(Dense(len(encoder.classes_), activation='softmax'))  # Output layer with number of classes
 
 
-# Define SGD optimizer with momentum
+# SGD optimizer with momentum
 optimizer = SGD(learning_rate=0.01, momentum=0.9)
 
-# Compile the model with SGD optimizer
+# Compile with SGD optimizer
 model.compile(loss='sparse_categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 # Train the model
 #model.fit(url_padded, y_encoded, epochs=10, batch_size=32, validation_split=0.2)
 
 history = model.fit(data_padded_train, y_train, epochs=10, batch_size=128, validation_split=0.2)
-# Calculate training time
+# training time
 end_time = time.time()
 training_time = end_time - start_time
 print("Training time: {:.2f} seconds".format(training_time))
 
-# Extract training and validation accuracy from history
+# training and validation accuracy from history
 
 test_start=time.time()
 # Evaluate the model on the test set
@@ -655,14 +649,14 @@ print(f"Test_time: {test:.2f}")
 print(f"Test Loss: {test_loss:.4f}")
 print(f"Test Accuracy: {test_accuracy:.4f}")
 
-# Make predictions on test set
+# predictions on test set
 y_pred = np.argmax(model.predict(data_padded_test), axis=-1)  # Predict class labels
 
-# Calculate precision, recall, F1-score, and FPR for all classes
+# precision, recall, F1-score, and FPR for all classes
 precision, recall, f1_score, _ = precision_recall_fscore_support(y_test, y_pred, average='micro')
 fpr = 1 - recall
 
-# Print overall evaluation metrics
+# evaluation metrics
 print("\nOverall Evaluation:")
 print(f"Precision (Micro): {precision:.4f}")
 print(f"Recall (Micro): {recall:.4f}")
@@ -679,14 +673,13 @@ from sklearn.metrics import confusion_matrix
 import seaborn as sns
 from sklearn.metrics import confusion_matrix
 
-# Get predictions for validation data
+# predictions for validation data
 predictions = model.predict(data_padded_test)
 predicted_labels = np.argmax(predictions, axis=1)
 
-# Compute confusion matrix
+# confusion matrix
 cm = confusion_matrix(y_test, predicted_labels)
 
-# Print confusion matrix
 print("Confusion Matrix:")
 print(cm)
 plt.figure(figsize=(10, 8))
@@ -701,7 +694,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 cm = tf.math.confusion_matrix(y_test, y_pred)
 
-# Normalize confusion matrix (optional, consider for imbalanced classes)
+# Normalize confusion matrix for imbalance in classes
 # cm = np.around(cm.astype('float') / cm.sum(axis=1)[:, np.newaxis], decimals=2)
 
 plt.figure(figsize=(8, 8))
@@ -715,7 +708,7 @@ plt.xlabel('Predicted Label')
 plt.ylabel('True Label')
 plt.title('Confusion Matrix')
 
-# Display values in squares on the heatmap
+# heatmap
 for i in range(len(cm)):
     for j in range(len(cm[0])):
         plt.text(j, i, format(cm[i, j], fmt), ha="center", va="center", fontsize=10)
@@ -733,7 +726,7 @@ plt.title('Training and Validation Accuracy')
 plt.legend()
 plt.show()
 
-# Plot training and validation loss
+# training and validation loss
 plt.plot(history.history['loss'], label='Training Loss')
 plt.plot(history.history['val_loss'], label='Validation Loss')
 plt.xlabel('Epoch')
@@ -758,7 +751,7 @@ import time
 # Start recording time
 start_time = time.time()
 
-# Assuming url_df is your DataFrame containing 'Data' and 'Category' columns
+
 url_df = pd.read_excel(url_dataset_path)
 html_df = pd.read_excel(html_dataset_path)
 
@@ -779,14 +772,14 @@ url_sequences = tokenizer.texts_to_sequences(url_text)
 max_len = 100
 url_padded = pad_sequences(url_sequences, maxlen=max_len, padding='post')
 
-# Splitting data into training and testing sets
+# training and testing sets
 data_padded_train, data_padded_test, y_train, y_test = train_test_split(url_padded, y_encoded, test_size=0.2, random_state=42)
 
-# Embedding layer configuration
+# Embedding layer
 embedding_dim = 128
 embedding_matrix = np.random.rand(len(tokenizer.word_index) + 1, embedding_dim)
 
-# Define the LSTM model
+# LSTM model
 model = Sequential()
 model.add(Embedding(len(tokenizer.word_index) + 1, embedding_dim, input_length=max_len, embeddings_initializer=Constant(embedding_matrix)))
 model.add(BatchNormalization())  # Add Batch Normalization
@@ -798,21 +791,21 @@ model.add(Dense(128, activation='relu'))  # Dense layer for classification
 model.add(Dropout(0.5))  # Add Dropout
 model.add(Dense(len(encoder.classes_), activation='softmax'))  # Output layer
 
-# Define SGD optimizer with momentum
+# SGD optimizer with momentum
 optimizer = tf.keras.optimizers.SGD(learning_rate=0.01, momentum=0.9)
 
-# Compile the model
+# Compile
 model.compile(loss='sparse_categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 
-# Train the model
+# Train
 history = model.fit(data_padded_train, y_train, epochs=30, batch_size=128, validation_split=0.2)
 
-# Calculate training time
+# training time
 end_time = time.time()
 training_time = end_time - start_time
 print("Training time: {:.2f} seconds".format(training_time))
 
-# Evaluate the model on the test set
+# Evaluate on test set
 test_start = time.time()
 test_loss, test_accuracy = model.evaluate(data_padded_test, y_test)
 test_end = time.time()
@@ -821,14 +814,14 @@ print(f"Test Time: {test_duration:.2f} seconds")
 print(f"Test Loss: {test_loss:.4f}")
 print(f"Test Accuracy: {test_accuracy:.4f}")
 
-# Make predictions on test set
+# test set predictions
 y_pred = np.argmax(model.predict(data_padded_test), axis=-1)
 
-# Calculate precision, recall, F1-score, and FPR for all classes
+# precision, recall, F1-score, and FPR for all classes
 precision, recall, f1_score, _ = precision_recall_fscore_support(y_test, y_pred, average='micro')
 fpr = 1 - recall
 
-# Print overall evaluation metrics
+# evaluation metrics
 print("\nOverall Evaluation:")
 print(f"Precision (Micro): {precision:.4f}")
 print(f"Recall (Micro): {recall:.4f}")
@@ -852,10 +845,8 @@ import time
 # Start recording time
 start_time = time.time()
 
-# Assuming url_df is your DataFrame containing 'Data' and 'Category' columns
 url_df = pd.read_excel(url_dataset_path)
 
-# Extract text data and labels
 url_text = url_df['Data'].tolist()
 y = url_df['Category']
 
@@ -872,14 +863,14 @@ url_sequences = tokenizer.texts_to_sequences(url_text)
 max_len = 100
 url_padded = pad_sequences(url_sequences, maxlen=max_len, padding='post')
 
-# Splitting data into training and testing sets
+# training and testing sets
 data_padded_train, data_padded_test, y_train, y_test = train_test_split(url_padded, y_encoded, test_size=0.2, random_state=42)
 
 # Embedding layer configuration
 embedding_dim = 128
 embedding_matrix = np.random.rand(len(tokenizer.word_index) + 1, embedding_dim)
 
-# Define the RNN model
+# RNN model
 model = Sequential()
 model.add(Embedding(len(tokenizer.word_index) + 1, embedding_dim, input_length=max_len, embeddings_initializer=Constant(embedding_matrix)))
 model.add(BatchNormalization())  # Add Batch Normalization
@@ -891,25 +882,25 @@ model.add(Dense(128, activation='relu'))  # Dense layer for classification
 model.add(Dropout(0.5))  # Add Dropout
 model.add(Dense(len(encoder.classes_), activation='softmax'))  # Output layer
 
-# Define SGD optimizer with momentum
+# SGD optimizer with momentum
 optimizer = tf.keras.optimizers.SGD(learning_rate=0.01, momentum=0.9)
 # optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
-# Compile the model
+# Compile
 model.compile(loss='sparse_categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 
-# Define early stopping callback
+# early stopping callback to prevent overfitting
 early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
 
-# Train the model
+# Train
 history = model.fit(data_padded_train, y_train, epochs=30, batch_size=128, validation_split=0.2, callbacks=[early_stopping])
 
-# Calculate training time
+# training time
 end_time = time.time()
 training_time = end_time - start_time
 print("Training time: {:.2f} seconds".format(training_time))
 
-# Evaluate the model on the test set
+# Evaluate
 test_start = time.time()
 test_loss, test_accuracy = model.evaluate(data_padded_test, y_test)
 test_end = time.time()
@@ -918,14 +909,14 @@ print(f"Test Time: {test_duration:.2f} seconds")
 print(f"Test Loss: {test_loss:.4f}")
 print(f"Test Accuracy: {test_accuracy:.4f}")
 
-# Make predictions on test set
+# predictions on test set
 y_pred = np.argmax(model.predict(data_padded_test), axis=-1)
 
-# Calculate precision, recall, F1-score, and FPR for all classes
+# precision, recall, F1-score, and FPR for all classes
 precision, recall, f1_score, _ = precision_recall_fscore_support(y_test, y_pred, average='micro')
 fpr = 1 - recall
 
-# Print overall evaluation metrics
+# evaluation metrics
 print("\nOverall Evaluation:")
 print(f"Precision (Micro): {precision:.4f}")
 print(f"Recall (Micro): {recall:.4f}")
@@ -949,10 +940,9 @@ import time
 # Start recording time
 start_time = time.time()
 
-# Assuming url_df is your DataFrame containing 'Data' and 'Category' columns
+
 url_df = pd.read_excel(url_dataset_path)
 
-# Extract text data and labels
 url_text = url_df['Data'].tolist()
 y = url_df['Category']
 
@@ -969,14 +959,14 @@ url_sequences = tokenizer.texts_to_sequences(url_text)
 max_len = 100
 url_padded = pad_sequences(url_sequences, maxlen=max_len, padding='post')
 
-# Splitting data into training and testing sets
+# training and testing sets
 data_padded_train, data_padded_test, y_train, y_test = train_test_split(url_padded, y_encoded, test_size=0.2, random_state=42)
 
 # Embedding layer configuration
 embedding_dim = 128
 embedding_matrix = np.random.rand(len(tokenizer.word_index) + 1, embedding_dim)
 
-# Define the GRU model
+# GRU model
 model = Sequential()
 model.add(Embedding(len(tokenizer.word_index) + 1, embedding_dim, input_length=max_len, embeddings_initializer=Constant(embedding_matrix)))
 model.add(BatchNormalization())  # Add Batch Normalization
@@ -988,24 +978,24 @@ model.add(Dense(128, activation='relu'))  # Dense layer for classification
 model.add(Dropout(0.5))  # Add Dropout
 model.add(Dense(len(encoder.classes_), activation='softmax'))  # Output layer
 
-# Define SGD optimizer with momentum
+# SGD optimizer with momentum
 optimizer = tf.keras.optimizers.SGD(learning_rate=0.01, momentum=0.9)
 
-# Compile the model
+# Compile
 model.compile(loss='sparse_categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 
-# Define early stopping callback
+# early stopping callback
 early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
 
-# Train the model
+# Train
 history = model.fit(data_padded_train, y_train, epochs=30, batch_size=128, validation_split=0.2, callbacks=[early_stopping])
 
-# Calculate training time
+# training time
 end_time = time.time()
 training_time = end_time - start_time
 print("Training time: {:.2f} seconds".format(training_time))
 
-# Evaluate the model on the test set
+# Evaluate
 test_start = time.time()
 test_loss, test_accuracy = model.evaluate(data_padded_test, y_test)
 test_end = time.time()
@@ -1014,14 +1004,14 @@ print(f"Test Time: {test_duration:.2f} seconds")
 print(f"Test Loss: {test_loss:.4f}")
 print(f"Test Accuracy: {test_accuracy:.4f}")
 
-# Make predictions on test set
+# predictions on test set
 y_pred = np.argmax(model.predict(data_padded_test), axis=-1)
 
-# Calculate precision, recall, F1-score, and FPR for all classes
+# precision, recall, F1-score, and FPR for all classes
 precision, recall, f1_score, _ = precision_recall_fscore_support(y_test, y_pred, average='micro')
 fpr = 1 - recall
 
-# Print overall evaluation metrics
+# evaluation metrics
 print("\nOverall Evaluation:")
 print(f"Precision (Micro): {precision:.4f}")
 print(f"Recall (Micro): {recall:.4f}")
@@ -1045,10 +1035,8 @@ import time
 # Start recording time
 start_time = time.time()
 
-# Assuming url_df is your DataFrame containing 'Data' and 'Category' columns
 url_df = pd.read_excel(url_dataset_path)
 
-# Extract text data and labels
 url_text = url_df['Data'].tolist()
 y = url_df['Category']
 
@@ -1065,14 +1053,14 @@ url_sequences = tokenizer.texts_to_sequences(url_text)
 max_len = 100
 url_padded = pad_sequences(url_sequences, maxlen=max_len, padding='post')
 
-# Splitting data into training and testing sets
+# training and testing sets
 data_padded_train, data_padded_test, y_train, y_test = train_test_split(url_padded, y_encoded, test_size=0.2, random_state=42)
 
 # Embedding layer configuration
 embedding_dim = 128
 embedding_matrix = np.random.rand(len(tokenizer.word_index) + 1, embedding_dim)
 
-# Define the Bidirectional LSTM model
+# Bidirectional LSTM
 model = Sequential()
 model.add(Embedding(len(tokenizer.word_index) + 1, embedding_dim, input_length=max_len, embeddings_initializer=Constant(embedding_matrix)))
 model.add(BatchNormalization())  # Add Batch Normalization
@@ -1084,24 +1072,24 @@ model.add(Dense(128, activation='relu'))  # Dense layer for classification
 model.add(Dropout(0.5))  # Add Dropout
 model.add(Dense(len(encoder.classes_), activation='softmax'))  # Output layer
 
-# Define SGD optimizer with momentum
+# SGD optimizer with momentum
 optimizer = tf.keras.optimizers.SGD(learning_rate=0.01, momentum=0.9)
 
-# Compile the model
+# Compile
 model.compile(loss='sparse_categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 
-# Define early stopping callback
+# early stopping
 early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
 
-# Train the model
+# Train
 history = model.fit(data_padded_train, y_train, epochs=30, batch_size=128, validation_split=0.2, callbacks=[early_stopping])
 
-# Calculate training time
+# training time
 end_time = time.time()
 training_time = end_time - start_time
 print("Training time: {:.2f} seconds".format(training_time))
 
-# Evaluate the model on the test set
+# Evaluate
 test_start = time.time()
 test_loss, test_accuracy = model.evaluate(data_padded_test, y_test)
 test_end = time.time()
@@ -1110,14 +1098,14 @@ print(f"Test Time: {test_duration:.2f} seconds")
 print(f"Test Loss: {test_loss:.4f}")
 print(f"Test Accuracy: {test_accuracy:.4f}")
 
-# Make predictions on test set
+# predictions on test set
 y_pred = np.argmax(model.predict(data_padded_test), axis=-1)
 
-# Calculate precision, recall, F1-score, and FPR for all classes
+# precision, recall, F1-score, and FPR for all classes
 precision, recall, f1_score, _ = precision_recall_fscore_support(y_test, y_pred, average='micro')
 fpr = 1 - recall
 
-# Print overall evaluation metrics
+# evaluation metrics
 print("\nOverall Evaluation:")
 print(f"Precision (Micro): {precision:.4f}")
 print(f"Recall (Micro): {recall:.4f}")
@@ -1141,10 +1129,8 @@ import time
 # Start recording time
 start_time = time.time()
 
-# Assuming url_df is your DataFrame containing 'Data' and 'Category' columns
 url_df = pd.read_excel(url_dataset_path)
 
-# Extract text data and labels
 url_text = url_df['Data'].tolist()
 y = url_df['Category']
 
@@ -1161,14 +1147,14 @@ url_sequences = tokenizer.texts_to_sequences(url_text)
 max_len = 100
 url_padded = pad_sequences(url_sequences, maxlen=max_len, padding='post')
 
-# Splitting data into training and testing sets
+# training and testing sets
 data_padded_train, data_padded_test, y_train, y_test = train_test_split(url_padded, y_encoded, test_size=0.2, random_state=42)
 
 # Embedding layer configuration
 embedding_dim = 128
 embedding_matrix = np.random.rand(len(tokenizer.word_index) + 1, embedding_dim)
 
-# Define the Bidirectional GRU model
+# Bidirectional GRU
 model = Sequential()
 model.add(Embedding(len(tokenizer.word_index) + 1, embedding_dim, input_length=max_len, embeddings_initializer=Constant(embedding_matrix)))
 model.add(BatchNormalization())  # Add Batch Normalization
@@ -1180,24 +1166,24 @@ model.add(Dense(128, activation='relu'))  # Dense layer for classification
 model.add(Dropout(0.5))  # Add Dropout
 model.add(Dense(len(encoder.classes_), activation='softmax'))  # Output layer
 
-# Define SGD optimizer with momentum
+# SGD optimizer with momentum
 optimizer = tf.keras.optimizers.SGD(learning_rate=0.01, momentum=0.9)
 
-# Compile the model
+# Compile
 model.compile(loss='sparse_categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 
-# Define early stopping callback
+# early stopping callback
 early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
 
-# Train the model
+# Train
 history = model.fit(data_padded_train, y_train, epochs=30, batch_size=128, validation_split=0.2, callbacks=[early_stopping])
 
-# Calculate training time
+# training time
 end_time = time.time()
 training_time = end_time - start_time
 print("Training time: {:.2f} seconds".format(training_time))
 
-# Evaluate the model on the test set
+# Evaluate
 test_start = time.time()
 test_loss, test_accuracy = model.evaluate(data_padded_test, y_test)
 test_end = time.time()
@@ -1206,14 +1192,14 @@ print(f"Test Time: {test_duration:.2f} seconds")
 print(f"Test Loss: {test_loss:.4f}")
 print(f"Test Accuracy: {test_accuracy:.4f}")
 
-# Make predictions on test set
+# predictions on test set
 y_pred = np.argmax(model.predict(data_padded_test), axis=-1)
 
-# Calculate precision, recall, F1-score, and FPR for all classes
+# precision, recall, F1-score, and FPR for all classes
 precision, recall, f1_score, _ = precision_recall_fscore_support(y_test, y_pred, average='micro')
 fpr = 1 - recall
 
-# Print overall evaluation metrics
+# evaluation metrics
 print("\nOverall Evaluation:")
 print(f"Precision (Micro): {precision:.4f}")
 print(f"Recall (Micro): {recall:.4f}")
@@ -1234,17 +1220,16 @@ import numpy as np
 import pandas as pd
 import time
 
-# Start recording time
+# recording time
 start_time = time.time()
 
-# Assuming url_df is your DataFrame containing 'Data' and 'Category' columns
 url_df = pd.read_excel(url_dataset_path)
 
-# Extract text data and labels
+# text data and labels
 url_text = url_df['Data'].tolist()
 y = url_df['Category']
 
-# Label encoding for target variable
+# Label encoding
 encoder = LabelEncoder()
 y_encoded = encoder.fit_transform(y)
 
@@ -1257,14 +1242,14 @@ url_sequences = tokenizer.texts_to_sequences(url_text)
 max_len = 100
 url_padded = pad_sequences(url_sequences, maxlen=max_len, padding='post')
 
-# Splitting data into training and testing sets
+# training and testing sets
 data_padded_train, data_padded_test, y_train, y_test = train_test_split(url_padded, y_encoded, test_size=0.2, random_state=42)
 
 # Embedding layer configuration
 embedding_dim = 128
 embedding_matrix = np.random.rand(len(tokenizer.word_index) + 1, embedding_dim)
 
-# Define the ANN model
+# ANN model
 model = Sequential()
 model.add(Embedding(len(tokenizer.word_index) + 1, embedding_dim, input_length=max_len, embeddings_initializer=Constant(embedding_matrix)))
 model.add(Flatten())  # Flatten the input from the embedding layer
@@ -1277,24 +1262,24 @@ model.add(Dense(64, activation='relu'))  # Third fully connected layer
 model.add(Dropout(0.5))  # Add Dropout for regularization
 model.add(Dense(len(encoder.classes_), activation='softmax'))  # Output layer
 
-# Define SGD optimizer with momentum
+# SGD optimizer with momentum
 optimizer = tf.keras.optimizers.SGD(learning_rate=0.01, momentum=0.9)
 
-# Compile the model
+# Compile
 model.compile(loss='sparse_categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 
-# Define early stopping callback
+# early stopping
 early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
 
-# Train the model
+# Train
 history = model.fit(data_padded_train, y_train, epochs=30, batch_size=128, validation_split=0.2, callbacks=[early_stopping])
 
-# Calculate training time
+# training time
 end_time = time.time()
 training_time = end_time - start_time
 print("Training time: {:.2f} seconds".format(training_time))
 
-# Evaluate the model on the test set
+# Evaluate
 test_start = time.time()
 test_loss, test_accuracy = model.evaluate(data_padded_test, y_test)
 test_end = time.time()
@@ -1303,14 +1288,14 @@ print(f"Test Time: {test_duration:.2f} seconds")
 print(f"Test Loss: {test_loss:.4f}")
 print(f"Test Accuracy: {test_accuracy:.4f}")
 
-# Make predictions on test set
+# predictions on test set
 y_pred = np.argmax(model.predict(data_padded_test), axis=-1)
 
-# Calculate precision, recall, F1-score, and FPR for all classes
+# precision, recall, F1-score, and FPR for all classes
 precision, recall, f1_score, _ = precision_recall_fscore_support(y_test, y_pred, average='micro')
 fpr = 1 - recall
 
-# Print overall evaluation metrics
+# evaluation metrics
 print("\nOverall Evaluation:")
 print(f"Precision (Micro): {precision:.4f}")
 print(f"Recall (Micro): {recall:.4f}")
@@ -1329,7 +1314,7 @@ from sklearn.metrics import precision_recall_fscore_support
 import pandas as pd
 import time
 
-# Assuming url_df is your DataFrame containing 'Data' and 'Category' columns
+
 url_df = pd.read_excel(url_dataset_path)
 
 # Extract text data and labels
@@ -1366,12 +1351,12 @@ input_ids = tf.concat(input_ids, axis=0).numpy() # Convert to NumPy array
 attention_masks = tf.concat(attention_masks, axis=0).numpy() # Convert to NumPy array
 
 
-# Splitting data into training and testing sets
+# training and testing sets
 ids_train, ids_test, masks_train, masks_test, y_train, y_test = train_test_split(
     input_ids, attention_masks, y_encoded, test_size=0.2, random_state=42
 )
 
-# Define optimizer, loss function, and metrics
+# optimizer, loss function, metrics
 num_train_steps = len(ids_train) // 32 * 3 # Assuming batch_size=32 and 3 epochs
 optimizer, schedule = create_optimizer(
     init_lr=2e-5, num_warmup_steps=0, num_train_steps=num_train_steps
@@ -1380,10 +1365,10 @@ optimizer, schedule = create_optimizer(
 loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
 metrics = ['accuracy']
 
-# Compile the model
+# Compile
 model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
 
-# Train the model
+# Train
 history = model.fit(
     x={'input_ids': ids_train, 'attention_mask': masks_train},
     y=y_train,
@@ -1392,7 +1377,7 @@ history = model.fit(
     validation_split=0.2
 )
 
-# Evaluate the model on the test set
+# Evaluate
 test_start = time.time()
 test_loss, test_accuracy = model.evaluate(
     x={'input_ids': ids_test, 'attention_mask': masks_test},
@@ -1404,15 +1389,15 @@ print(f"Test Time: {test_duration:.2f} seconds")
 print(f"Test Loss: {test_loss:.4f}")
 print(f"Test Accuracy: {test_accuracy:.4f}")
 
-# Make predictions on test set
+# predictions on test set
 predictions = model.predict(x={'input_ids': ids_test, 'attention_mask': masks_test})
 y_pred = np.argmax(predictions.logits, axis=1)
 
-# Calculate precision, recall, F1-score, and FPR for all classes
+# precision, recall, F1-score, and FPR for all classes
 precision, recall, f1_score, _ = precision_recall_fscore_support(y_test, y_pred, average='micro')
 fpr = 1 - recall
 
-# Print overall evaluation metrics
+# evaluation metrics
 print("\nOverall Evaluation:")
 print(f"Precision (Micro): {precision:.4f}")
 print(f"Recall (Micro): {recall:.4f}")
